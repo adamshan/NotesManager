@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<!-- on insere la librerie pour le moteur de template thymeleaf -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- lorsqu'on utilise le template teamleaf toutes les balises doivent etres fermes -->
+<meta charset="utf-8"/>
+<title>statisque d'une classe</title>
+<link type="text/css" href="../static/css/bootstrap/bootstrap.min.css" rel="stylesheet"
+						th:href="@{css/bootstrap/bootstrap.min.css}"
+	/>
+<link type="text/css" href="../static/css/monproprestyle/style.css" rel="stylesheet"
+						th:href="@{css/monproprestyle/style.css}"
+	/>
+<script type="text/javascript" src="../static/js/monjavascript/script.js"  th:src="@{js/monjavascript/script.js}"></script>
+
+<script type="text/javascript" src="../static/js/monjavascript/jquery.js"  th:src="@{js/monjavascript/jquery.js}"></script>
+ <script type="text/javascript">
+                
+ $(function() {
+
+     $('#trimestre').change(function() {
+    	 var trimestre = $('#trimestre').val();
+       $.get('http://127.0.0.1:8080/periodetrimestre?trimestre='+trimestre, function(data) {
+
+    	   var $select = $('#sequence');
+    	   $select.find('option').remove();
+    	   var i=0;
+    	   $.each(data,function(){
+    	      $('<option>').val(data[i]).text(data[i]).appendTo($select);
+    	      i++;
+    	   });
+           
+			
+       });    
+
+     });  
+
+   }); 
+      
+        </script>
+
+
+</head>
+<body class="col-md-12">
+    <header>
+		      <img src="../static/image/logo.png" th:src="@{image/logo.png}" id="logo" alt="logo du site" class="logo">
+		      
+		<nav>
+		<div id="menubar">
+					<ul class="menu">
+						<li class="active">
+						    <a href="">Accueil</a></li>
+						    <li>
+							<a >statisques</a>
+							<ul class="submenu">
+								<li><a th:href="@{statistique}">D'une classe</a></li>
+								<li><a href="">annuelle</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="">Gestion</a>
+							<ul class="submenu">
+								<li><a th:href="@{gestionPeriodeEvaluation}">periode d'evaluation</a></li>
+								<li><a th:href="@{classes}">classe</a></li>
+								<li><a th:href="@{pageeleve}">eleve</a></li>
+								<li><a th:href="@{enseignant}">enseignant</a></li>
+								<li><a th:href="@{matiere}">matiere</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="">Détails</a>
+							<ul class="submenu">
+								<li><a th:href="@{eleve}">note d'un eleve</a></li>
+								<li><a href="">bulletin</a></li>
+							</ul>
+						</li>
+						<li><a th:href="@{login}">Déconnecter</a></li>
+					</ul>
+				</div>
+			</div>
+	      </nav>
+		      <div class="textRevealContainer">		        
+		        <div class="textReveal RotateY">
+		         <div>
+		         <div>
+		         	<h1>Statistique</h1>
+		         </div>
+		      	  </div>
+		        </div>
+		      </div>
+	</header>
+	<section>
+			<article>
+				<div class="container panel panel-primary" style="margin-left: 5%;">
+					
+	<form th:action="@{statistique}" method="get" class="form-inline">
+		<label>Choix de la classe</label>
+		<select name="classe">
+			<div th:each="p:${listeclasse}">
+				<option th:text="${p.nomClasse}"></option>
+			</div>
+		</select>
+		
+		<label>Choix du Trimestre</label>
+		<label>Choix du Trimestre</label>
+		<select name="trimestre" id="trimestre">
+			<div th:each="p:${listetrimestre}">
+				<option th:text="${p.libelle}"></option>
+			</div>
+		</select>
+		
+		<label>Choix de la Periode</label>
+		<select name="sequence" id="sequence">
+			<div th:each="p:${listeperiode}">
+				<option th:text="${p.libelle}"></option>
+			</div>
+		
+		</select>
+		<button type="submit" class="btn btn-success">Afficher</button>
+	</form>
+	<div class="labell">
+		<span><label>Classe:</label><h4 th:text="${classe}"></h4></span>
+		<span><label>Periode:</label><h4 th:text="${periode}"></h4></span>
+	</div>
+
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Rang</th>
+				<th>Nom et Prenom</th>
+				<th>Moyenne</th>
+				<th>Mention</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="p:${listebilan}">
+				<td th:text="${p.rang}"></td>
+				<td th:text="${p.nom}"></td>
+				<td th:text="${p.moyenne}"></td>
+				<td th:text="${p.mention}"></td>
+			</tr>
+			<tr>
+				<th colspan="4"><h4 style="margin-left: 40%;">Statistique générale</h4></th>
+			</tr>
+				<tr>
+					<th colspan="4"><h4 th:text="${profTitulaire}" style="margin-left: 40%;"></h4></th>
+				</tr>
+			<tr>
+				<th>Moyenne Generale</th>
+				<th>Nombre d'admis</th>
+				<th>Moyenne Premier</th>
+				<th>Moyenne dernier</th>
+			</tr>
+			<tr>
+				<td th:text="${moyennegenerale}"></td>
+				<td th:text="${nombreDadmis}"></td>
+				<td th:text="${bilanpremier.moyenne}"></td>
+				<td th:text="${bilandernier.moyenne}"></td>
+			</tr>
+		
+		</tbody>
+	</table>
+
+					
+				</div>
+			</article>
+	</section>
+</body>
+</html>

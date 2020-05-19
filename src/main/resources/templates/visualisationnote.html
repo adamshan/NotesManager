@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!-- on insere la librerie pour le moteur de template thymeleaf -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- lorsqu'on utilise le template teamleaf toutes les balises doivent etres fermes -->
+<meta charset="utf-8"/>
+<title>elevee</title>
+<link type="text/css" href="../static/css/bootstrap/bootstrap.min.css" rel="stylesheet"
+						th:href="@{css/bootstrap/bootstrap.min.css}"
+	/>
+<link type="text/css" href="../static/css/monproprestyle/style.css" rel="stylesheet"
+						th:href="@{css/monproprestyle/style.css}"
+	/>
+<script type="text/javascript" src="../static/js/monjavascript/script.js"  th:src="@{js/monjavascript/script.js}"></script>
+
+
+</head>
+<body class="col-md-12">
+    <header>
+		      <img src="../static/image/logo.png" th:src="@{image/logo.png}" id="logo" alt="logo du site" class="logo">
+		      
+		<nav style="margin-left: 50%; vertical-align: top;">
+		<div class="menubar">
+					<ul class="menu">
+						<li><a th:href="@{/login?logout}">Déconnecter</a></li>
+					</ul>
+				</div>
+			</div>
+	      </nav>	      
+		      <div class="textRevealContainer">		        
+		        <div class="textReveal RotateY">
+		         <div>
+		         <div>
+		         	<h1>visualiser vos notes</h1>
+		         </div>
+		      	  </div>
+		        </div>
+		      </div>
+	</header>
+
+  <section>
+		<article>
+				<div class="container panel panel-primary col-md-offset-0.5">
+					<div class="col-md-6 col-md-offset-3">
+					<form th:action="@{eleve}" method="get" class="form-inline">
+			<label for="classe">Selectionner la Classe</label>
+				<select name="classe" id="classe" class="form-control">
+				<div th:each="c:${list_classe}">
+					<option th:text="${c.nomClasse}"></option>
+				</div>
+			</select>
+			<button class="btn btn-success">Chercher</button>
+			
+		</form>
+							
+				</div>
+
+	<div class="container">
+
+	<table class="table">
+	<caption>TABLEAU DES ELEVES</caption>
+  <tr>
+    <th>ID</th>
+    <th>NOM</th>
+    <th>PRENOM</th>
+    <th>NOM TUTEUR</th>
+    <th>TELTUTEUR</th>
+    <th>SEXE</th>
+    <th>DATE NAISSANCE</th>
+    <th>Classe</th>
+    <th></th>
+    
+  </tr>
+  
+  <tr th:each="el:${listEleve}">
+    <td th:text="${el.matricule}"></td>
+    <td th:text="${el.nom}"></td>
+    <td th:text="${el.prenom}"></td>
+    <td th:text="${el.nom_tuteur}"></td>
+    <td th:text="${el.tel_tuteur}"></td>
+    <td th:text="${el.sexe}"></td>
+    <td th:text="${el.date_naissance}"></td>
+    <td th:text="${el.classe.nomClasse}"></td>
+    <td><a th:href="@{infonote(matricule=${el.matricule})}">details note</a></td>
+    <td><a th:href="@{detailsnote(matricule=${el.matricule})}">voir bulletin trimestrielle</a></td>
+    
+    
+    
+  </tr>
+</table>
+</div>	
+<div>
+	<ul class="nav nav-pills">
+  <li  th:each="pa,status:${pages}">
+		<a th:href="@{eleve(page=${status.index},motcle=${motcle})}" th:text="${status.index}"></a>
+ </li>
+  
+	</ul>
+
+</div>
+					
+				</div>
+	</article>
+  </section>
+</body>
+</html>

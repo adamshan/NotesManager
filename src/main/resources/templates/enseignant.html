@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>gestion des enseignants</title>
+<link type="text/css" href="../static/css/bootstrap/bootstrap.min.css" rel="stylesheet"
+						th:href="@{css/bootstrap/bootstrap.min.css}"/>
+<link type="text/css" href="../static/css/monproprestyle/style.css" rel="stylesheet" th:href="@{css/monproprestyle/style.css}">
+</head>
+<body class="col-lg-12">
+<header>
+		      <img src="../static/image/logo.png" th:src="@{image/logo.png}" id="logo" alt="logo du site" class="logo">
+		      
+		<nav>
+		<div id="menubar">
+					<ul class="menu">
+						<li class="active">
+						    <a href="">Accueil</a></li>
+						    <li>
+							<a >statisques</a>
+							<ul class="submenu">
+								<li><a th:href="@{statistique}">D'une classe</a></li>
+								<li><a href="">annuelle</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="">Gestion</a>
+							<ul class="submenu">
+								<li><a th:href="@{gestionPeriodeEvaluation}">periode d'evaluation</a></li>
+								<li><a th:href="@{classes}">classe</a></li>
+									<li><a th:href="@{pageeleve}">eleve</a></li>
+								<li><a th:href="@{enseignant}">enseignant</a></li>
+								<li><a th:href="@{matiere}">matiere</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="">Détails</a>
+							<ul class="submenu">
+								<li><a th:href="@{eleve}">note d'un eleve</a></li>
+								<li><a href="">bulletin</a></li>
+							</ul>
+						</li>
+						<li><a th:href="@{/login?logout}">Déconnecter</a></li>
+					</ul>
+				</div>
+			</div>
+	      </nav>
+		      <div class="textRevealContainer">		        
+		        <div class="textReveal RotateY">
+		         <div>
+		         <div>
+		         	<h1>Gestion des enseignants</h1>
+		         </div>
+		      	  </div>
+		        </div>
+		      </div>
+	</header>
+	
+ <section class="container card-body">
+ <aside>
+ <div class="col-md-12" >
+		<div class="panel panel-primary" >
+			<div class="panel-heading ">AJOUT DE ENSEIGNANT</div>
+			<div class="panel-body">
+					<form th:action="@{ajouter}" method="GET" class="form-group">
+			
+				<label for="username" class="label-control">login:</label>
+				<input type="text"  placeholder="Entrez votre login" name="username" id="nom" class="form-control"/>
+				<label for="password" class="label-control">Password</label>
+				<input type="text"  placeholder="Entrez votre password" name="password" id="prenom" class="form-control"/>
+			
+				<label for="nom" class="label-control">Nom de l'enseignant:</label>
+				<input type="text"  placeholder="Entrez un nom" name="nom" id="nom" class="form-control"/>
+				<label for="prenom">Prenom de l'enseignant:</label>
+				<input type="text"  placeholder="Entrez un prenom" name="prenom" id="prenom" class="form-control"/>
+				<label for="cni">Numero de cni:</label>
+				<input type="text"  placeholder="Entrez une CNI" name="cni" id="cni" class="form-control"/>
+				<label for="fonction">Fonction de l'enseignant:</label>
+				<input type="text"  placeholder="Entrez une fonction" name="fonction" id="fonction" class="form-control"/>
+				<label for="niveau">Niveau de l'enseignant:</label>
+				<input type="text"  placeholder="Entrez un niveau" name="niveau" id="niveau" class="form-control"/>
+				<input type="reset" value="Annuler" class="btn btn-danger"/>
+				<input type="submit" value="Valider" class="btn btn-primary"/>
+			</form>	
+		
+			</div>
+		</div>
+		</div>
+ </aside>
+ <article>
+ 
+<!-- 		definition du conteneur d'affichage des enseignants -->
+		<div>
+<!-- 		definition du conteneur de recherche d'un enseignant -->
+			<div>
+				<form th:action="@{enseignant}" method="POST" class="form-inline">
+					<label for="rech">Rechercher par nom: </label>
+					<input type="text" placeholder="mot clé" name="rech" id="rech" th:value="${ensmotcle}" class="form-control"/>
+					<button class="btn btn-success">Rechercher</button>			
+				</form>
+			</div>
+			
+<!-- 			corps d'affichage des enseignants -->
+			<div>
+				<table class="table table-striped">
+				<caption align="top">Liste des Enseignants:</caption>
+				<thead>
+				<tr>
+					<th>Id</th>
+					<th>Nom(s)</th>
+					<th>Prenom(s)</th>
+					<th>CNI</th>
+					<th>Fonction</th>
+					<th>Niveau</th>
+					<th>Supprimer ou Modifier</th>
+				</tr>
+				</thead>
+				
+				<tbody>
+				<tr th:each="e:${ListeEnseignant}">
+					<td th:text="${e.username}"></td>
+					<td th:text="${e.nom}"></td>
+					<td th:text="${e.prenom}"></td>
+					<td th:text="${e.cni}"></td>
+					<td th:text="${e.fonction}"></td>
+					<td th:text="${e.niveau}"></td>
+					<td> <a th:href="@{deleteEnseignant(id=${e.username}, rech=${ensmotcle}, page=${enspagecourante})}"> Supprimer </a><a href="">Modifier</a> </td>
+					
+				</tr>
+				</tbody>
+				</table>
+			
+			
+			
+			</div>
+			<div>
+				<ul class="nav nav-pills">
+  					<li  th:each="pa,status:${enspagetotal}">
+						<a th:href="@{enseignant(page=${status.index}, rech=${ensmotcle})}" th:text="${status.index}"></a>
+ 					</li>
+  
+				</ul>
+
+			</div>
+		
+		</div>
+ 
+     </article>
+  </section>
+ </body>
+</html>

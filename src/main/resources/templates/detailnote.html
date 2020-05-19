@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!-- on insere la librerie pour le moteur de template thymeleaf -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- lorsqu'on utilise le template teamleaf toutes les balises doivent etres fermes -->
+<meta charset="utf-8"/>
+<title>elevee</title>
+<link type="text/css" href="../static/css/bootstrap/bootstrap.min.css" rel="stylesheet"
+						th:href="@{css/bootstrap/bootstrap.min.css}"
+	/>
+<link type="text/css" href="../static/css/monproprestyle/style.css" rel="stylesheet"
+						th:href="@{css/monproprestyle/style.css}"
+	/>
+<script type="text/javascript" src="../static/js/monjavascript/script.js"  th:src="@{js/monjavascript/script.js}"></script>
+
+
+</head>
+<body>
+
+		<section>
+			<article>
+					<div class="container panel panel-primary col-md-offset-2">
+						<h4>MATRICULE: <span  th:text="${eleve.matricule}"></span></h4>
+					<h4>NOM: <span  th:text="${eleve.nom}"></span></h4>
+					<h4>PRENOM: <span  th:text="${eleve.prenom}"></span></h4>
+					<h4>NOM DU TUTEUR: <span  th:text="${eleve.nom_tuteur}"></span></h4>
+					<h4>CLASSE:  <span  th:text="${eleve.classe.nomClasse}"></span></h4>
+
+	<div class="container">
+		<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Matiere</th>
+				<th>Sequence1</th>
+				<th>Sequence2</th>
+				<th>Sequence3</th>
+				<th>Coef</th>
+				<th>Total</th>
+			</tr>
+		</thead>
+		<tbody th:each="liste,status:${listedeliste}" th:unless	="${liste.empty}">
+			<tr th:with="someVariable=8">
+			    <td th:text="${listematiere[__${status.index}__].libelle}"></td>
+  				<td  th:each="el:${liste}"  th:text="${el.note}" th:with="someVariable=${someVariable+5}"></td>
+			    <td   th:text="${listematiere[__${status.index}__].coef}"></td>
+    			 <td   th:text="${someVariable}"></td>
+  	  
+  			</tr>
+		
+		</tbody>
+	</table>
+	
+	</div>
+				
+											
+					</div>
+			</article>
+		</section>
+			
+</body>
+</html>

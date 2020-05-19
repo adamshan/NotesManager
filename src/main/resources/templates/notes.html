@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8"/>
+<link type="text/css" href="../static/css/bootstrap/bootstrap.min.css" rel="stylesheet"
+						th:href="@{css/bootstrap/bootstrap.min.css}"
+	/>
+<title>Gestion des notes eleves</title>
+</head>
+<script>
+function fermer(id)
+{
+      var formg=document.getElementById(id);
+     
+     formg.note.readOnly=true;
+}
+</script>
+
+<body>
+		
+	<div class="container">
+	<form   th:action="@{save}" method="post" th:object="${form}" onsubmit="fermer(this.id);" >
+<table class="table table-hover table-sm" >
+	<caption>TABLEAU DES ELEVES</caption>
+ <thead>
+  <tr>
+    <th>ID</th>
+    <th>NOM</th>
+    <th>NOTE</th>
+  </tr>
+ </thead>
+ <tbody>
+  <tr th:if="${liste_eleve.empty}">
+     <td>la liste des eleves est vide</td>
+  </tr>
+  <tr th:each="el,itemStat:${liste_eleve}"  >
+    <td th:text="${el.matricule}" scope="row"></td>
+    <td th:text="${el.nom}" scope="row"></td>
+    <td scope="row">
+    
+	    		<input type="hidden"  th:field="*{liste_evaluation[__${itemStat.index}__].eleve}"/>
+	    		<input type="hidden"  th:field="*{liste_evaluation[__${itemStat.index}__].matiere}" />
+	            <input type="hidden"  th:field="*{liste_evaluation[__${itemStat.index}__].periode_eval}"/> 
+	    		<input type="number"   th:field="*{liste_evaluation[__${itemStat.index}__].note}" name="note"/>
+	    		
+	    		
+	    	
+    </td>
+    </tr>
+ </tbody>
+</table>
+
+	<button type="submit" class="btn btn-success btn-sm" > sauvegarder</button>
+</form>
+</div>	
+
+</body> 
+</html>

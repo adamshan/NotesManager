@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!-- on insere la librerie pour le moteur de template thymeleaf -->
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- lorsqu'on utilise le template teamleaf toutes les balises doivent etres fermes -->
+<meta charset="utf-8"/>
+<title>elevee</title>
+<link type="text/css" href="../static/css/bootstrap/bootstrap.min.css" rel="stylesheet"
+						th:href="@{css/bootstrap/bootstrap.min.css}"
+	/>
+<link type="text/css" href="../static/css/monproprestyle/style.css" rel="stylesheet"
+						th:href="@{css/monproprestyle/style.css}"
+	/>
+<script type="text/javascript" src="../static/js/monjavascript/script.js"  th:src="@{js/monjavascript/script.js}"></script>
+
+
+</head>
+<body>
+	<section>
+			<article>
+					<div class="container panel panel-primary col-md-offset-2">
+						
+        		     <h4>MATRICULE: <span  th:text="${eleve.matricule}"></span></h4>
+					<h4>NOM: <span  th:text="${eleve.nom}"></span></h4>
+					<h4>PRENOM: <span  th:text="${eleve.prenom}"></span></h4>
+					<h4>NOM DU TUTEUR: <span  th:text="${eleve.nom_tuteur}"></span></h4>
+					<h4>CLASSE:  <span  th:text="${eleve.classe.nomClasse}"></span></h4>
+		
+				<div class="container col-md-offset-3">
+					<form th:action="@{infonote}" method="get" class="form-inline">
+						<label for="sequence">Sequence: </label>
+						<select name="sequence" class="form-control">
+							<option>sequence1</option>
+							<option>sequence2</option>
+							<option>sequence3</option>
+							
+						</select>
+						<input type="hidden" th:value="${eleve.matricule}" name="matricule">
+						<button type="submit" class="btn btn-info">Info</button>
+					</form>
+			</div>		     
+			<div class="info">
+					<h4>PERIODE EVALUATION: <span class="sequence" th:text="${sequence}"></span> </h4>
+			</div>
+	
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>MATIERE</th>
+					<th>COEFFICIENT</th>
+					<th>ENSEIGNANT</th>
+					<th>NOTE</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:if="${sequence.empty && listeevaluation.empty}">
+					<td>selectionner une periode evaluation</td>
+				</tr>
+				<tr th:if="${listeevaluation.empty && !sequence.empty }">
+					<td>aucune note deja enregistrée pour cette evaluation</td>
+				</tr>
+				<tr th:each="eva:${listeevaluation}">
+					<td th:text="${eva.matiere.libelle}"></td>
+					<td th:text="${eva.matiere.coef}"></td>
+					<td th:text="${eva.matiere.enseignant.nom}"></td>
+					<td th:text="${eva.note}"></td>
+				</tr>
+				
+			</tbody>
+		</table>
+							
+					</div>
+			</article>
+	</section>	
+</body>
+</html>
